@@ -1,0 +1,51 @@
+name: Docker Build & Smoke Test
+on:
+  pull_request:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Optional: cache pip to speed up builds (works if Dockerfile uses pip cache mount or similar)
+      # Keeping it simple for now—straight build.
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        run: |
+          docker build -t app:test .
+
+      - name: Run container
+        run: |
+          docker run -d -p 8080:8080 --name app app:test
+          # wait a moment for gunicorn to start
+          for i in {1..15}; do
+            if curl -fsS http://localhost:8080/ >/dev/null; then
+              echo "App is up"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "App did not start in time"
+          docker logs app || true
+          exit 1
+
+      - name: Show app response (for logs)
+        if: always()
+        run: |
+          curl -s http://localhost:8080/ || true
+          echo
+          docker ps -a || true
+          docker logs app || true
+
+      - name: Cleanup
+        if: always()
+        run: |
+          docker rm -f app 2>/dev/null || true
