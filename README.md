@@ -127,8 +127,7 @@ jobs:
 Add a badge to the top of your README (first line):
 
 
-![Dockerfile Lint](https://github.com/ibhadeA/project2-cloud-run-hello/actions/workflows/docker-lint.yml/badge.svg)
-
+[Dockerfile Lint]
 ## C) Do it from Cloud Shell (commands)
 From your Project 2 folder:
 
