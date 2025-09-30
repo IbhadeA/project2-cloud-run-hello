@@ -1,5 +1,7 @@
 ![Dockerfile Lint](https://github.com/ibhadeA/project2-cloud-run-hello/actions/workflows/docker-lint.yml/badge.svg)
 
+![Docker Build & Test](https://github.com/ibhadeA/project2-cloud-run-hello/actions/workflows/docker-build-test.yml/badge.svg)
+
 # Project 2 — Containerized Hello App on Cloud Run (London)
 
 **Project ID:** `web-demo-473709`  
